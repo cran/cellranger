@@ -2,13 +2,14 @@
 % Please edit documentation in R/cell-limits.R
 \name{cell_limits}
 \alias{as.cell_limits}
+\alias{as.cell_limits.NULL}
 \alias{as.cell_limits.cell_limits}
 \alias{as.cell_limits.character}
 \alias{cell_limits}
 \alias{dim.cell_limits}
 \title{Create a cell_limits object}
 \usage{
-cell_limits(rows = c(NA_integer_, NA_integer_), cols = c(NA_integer_,
+cell_limits(ul = c(NA_integer_, NA_integer_), lr = c(NA_integer_,
   NA_integer_))
 
 \method{dim}{cell_limits}(x)
@@ -17,12 +18,14 @@ as.cell_limits(x)
 
 \method{as.cell_limits}{cell_limits}(x)
 
+\method{as.cell_limits}{NULL}(x)
+
 \method{as.cell_limits}{character}(x)
 }
 \arguments{
-\item{rows}{vector holding minimum and maximum row}
+\item{ul}{vector identifying upper left cell of target rectangle}
 
-\item{cols}{vector holding minimum and maximum col}
+\item{lr}{vector identifying lower right cell of target rectangle}
 
 \item{x}{input to convert into a \code{cell_limits} object}
 }
@@ -30,36 +33,41 @@ as.cell_limits(x)
 a \code{cell_limits} object
 }
 \description{
-The expectation is that \code{as.cell_limits} will be called to process
-user-provided input on the target cell range for read/write operations on a
-spreadsheet. Downstream code can be written assuming cell limits are stored
-in a valid \code{cell_limits} object.
+The expectation is that \code{\link{as.cell_limits}} will be called to
+process user-provided input specifying the target cell range for read/write
+operations on a spreadsheet. Downstream code can be written assuming cell
+limits are stored in a valid \code{cell_limits} object.
 }
 \details{
 A \code{cell_limits} object is a list with two components:
 
 \itemize{
-\item \code{rows} vector, of the form \code{c(min, max)}
-\item \code{cols} vector, of the form \code{c(min, max)}
+  \item \code{ul} vector specifying upper left cell of target rectangle, of
+  the form \code{c(ROW_MIN, COL_MIN)}
+  \item \code{lr} vector specifying lower right cell of target rectangle, of
+  the form \code{c(ROW_MAX, COL_MAX)}
 }
 
-Typically the \code{min} and \code{max} are positive integers, where the
-first (the minimum) is less than or equal to the second (the maximum). A
-value of \code{NA} means the corresponding limit is left unspecified.
-Therefore a verbose way to specify no limits at all would be
-\code{cell_limits(c(NA, NA), c(NA, NA))}.
+This follows the spreadsheet convention where a cell range is described as
+\code{UPPER_LEFT_CELL:LOWER_RIGHT_CELL}. For rows and columns, the associated
+\code{MIN} and \code{MAX} are positive integers, where the minimum should be
+less than or equal to the maximum. A value of \code{NA} means the
+corresponding limit is left unspecified. Therefore a verbose way to specify
+no limits at all would be \code{cell_limits(c(NA, NA), c(NA, NA))}. If the
+maximum row or column is specified but the associated minimum is not, then
+the minimum it is set to 1.
 
-Spreadsheet ranges can be specified using "A1" notation or "R1C1" notation
-and dollar signs will be ignored, i.e. "A$1:$B$32" is equivalent to "A1:B32".
+When specified via character, spreadsheet ranges can be given in "A1"
+notation or "R1C1" notation and dollar signs will be ignored, i.e.
+"A$1:$B$32" is equivalent to "A1:B32".
 }
 \examples{
 cell_limits(c(1, 3), c(1, 5))
 cell_limits(c(NA, 7), c(3, NA))
 cell_limits(c(NA, 7))
-cell_limits(cols = c(NA, 7))
+cell_limits(lr = c(3, 7))
 
 dim(as.cell_limits("A1:F10"))
-dim(cell_limits(cols = c(2, 5)))
 as.cell_limits("A1")
 as.cell_limits("Q24")
 as.cell_limits("A1:D8")

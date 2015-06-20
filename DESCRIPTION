@@ -1,6 +1,6 @@
 Package: cellranger
 Title: Translate Spreadsheet Cell Ranges to Rows and Columns
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(
     person("Jennifer", "Bryan", , "jenny@stat.ubc.ca", c("cre", "aut")),
     person("Hadley", "Wickham", , "hadley@rstudio.com", "ctb")
@@ -12,11 +12,11 @@ License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/jennybc/cellranger
 BugReports: https://github.com/jennybc/cellranger/issues
-Suggests: testthat
-Packaged: 2015-04-22 17:10:55 UTC; jenny
+Suggests: covr, testthat
+NeedsCompilation: no
+Packaged: 2015-06-20 20:55:56 UTC; jenny
 Author: Jennifer Bryan [cre, aut],
   Hadley Wickham [ctb]
 Maintainer: Jennifer Bryan <jenny@stat.ubc.ca>
-NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2015-04-22 21:58:18
+Date/Publication: 2015-06-20 23:40:47
